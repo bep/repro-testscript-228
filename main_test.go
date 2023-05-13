@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"strings"
+	"strconv"
 	"testing"
 	"time"
 
@@ -15,10 +14,25 @@ func TestScripts(t *testing.T) {
 	setup := testSetupFunc()
 	testscript.Run(t, testscript.Params{
 		Dir: "testscripts",
+		//..
+
 		// UpdateScripts: true, // Uncomment to rewrite the test scripts with
 		// TestWork: true, // Uncomment to keep the test work dir.
 		Setup: func(env *testscript.Env) error {
 			return setup(env)
+		},
+		Cmds: map[string]func(ts *testscript.TestScript, neg bool, args []string){
+			"sleep": func(ts *testscript.TestScript, neg bool, args []string) {
+				i := 1
+				if len(args) > 0 {
+					var err error
+					i, err = strconv.Atoi(args[0])
+					if err != nil {
+						i = 1
+					}
+				}
+				time.Sleep(time.Duration(i) * time.Second)
+			},
 		},
 	})
 }
@@ -26,9 +40,8 @@ func TestScripts(t *testing.T) {
 func TestMain(m *testing.M) {
 	os.Exit(
 		testscript.RunMain(m, map[string]func() int{
-			"gomaintemplate": func() int {
-				fmt.Println(strings.Join(os.Args[1:], " "))
-				time.Sleep(10 * time.Millisecond)
+			"runserver": func() int {
+				runServer(os.Args[1:])
 				return 0
 			},
 		}),

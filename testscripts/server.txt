@@ -1,0 +1,8 @@
+# See https://github.com/rogpeppe/go-internal/issues/228
+
+runserver &
+# Allow the server som time to start.
+sleep 2
+! stderr .
+stop
+
