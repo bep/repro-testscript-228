@@ -2,7 +2,7 @@
 
 runserver &
 # Allow the server som time to start.
-sleep 3
+sleep 2
 ! stderr .
 stop
 
