@@ -11,3 +11,5 @@ require (
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/tools v0.9.1 // indirect
 )
+
+replace github.com/rogpeppe/go-internal => github.com/bep/go-internal v1.10.1-0.20230513160059-6a281ba5ab73
